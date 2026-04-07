@@ -5,652 +5,739 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Genesis Mobile — Weapon Guide</title>
   <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', 'Noto Sans', sans-serif;
-      background-color: #c9b99a;
-      color: #3a2e1e;
-      min-height: 100vh;
-    }
-
-    a { text-decoration: none; color: inherit; }
-
-    /* ── Top Nav ── */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 24px;
-      background-color: #c9b99a;
-      border-bottom: 1px solid #a89070;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .site-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #3a2e1e;
-    }
-
-    nav {
-      display: flex;
-      gap: 8px;
-    }
-
-    nav button {
-      font-size: 12px;
-      padding: 4px 12px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      color: #3a2e1e;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    nav button:hover, nav button.active {
-      background: #b09070;
-      color: #fff;
-    }
-
-    /* ── Page sections ── */
-    .page-section {
-      display: none;
-    }
-    .page-section.active {
-      display: block;
-    }
-
-    /* ── Main ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 16px;
-    }
-
-    .page-header {
-      margin-bottom: 20px;
-    }
-
-    .page-title {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .page-subtitle-en {
-      font-size: 12px;
-      letter-spacing: 3px;
-      color: #7a6a50;
-      margin-left: 8px;
-    }
-
-    .page-desc {
-      font-size: 12px;
-      color: #6a5a40;
-      margin-top: 4px;
-    }
-
-    /* ── Filters ── */
-    .filters {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .filters select {
-      padding: 5px 10px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 13px;
-      color: #3a2e1e;
-      cursor: pointer;
-    }
-
-    .filters label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      padding: 5px 10px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-    }
-
-    .filters input[type="text"] {
-      flex: 1;
-      min-width: 200px;
-      padding: 5px 12px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 13px;
-      color: #3a2e1e;
-    }
-
-    .filters input[type="text"]::placeholder { color: #9a8a70; }
-
-    /* ── Weapon Table ── */
-    .weapon-table-wrap {
-      border: 1px solid #8a7060;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    table.weapon-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #d9c9aa;
-    }
-
-    table.weapon-table thead th {
-      padding: 10px 14px;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 600;
-      color: #5a4a30;
-      background: #c9b99a;
-      border-bottom: 1px solid #8a7060;
-    }
-
-    table.weapon-table tbody tr {
-      border-bottom: 1px dashed #b09070;
-      transition: background 0.15s;
-    }
-
-    table.weapon-table tbody tr:last-child { border-bottom: none; }
-    table.weapon-table tbody tr:hover { background: #cfc0a0; }
-
-    table.weapon-table td {
-      padding: 10px 14px;
-      font-size: 13px;
-      vertical-align: middle;
-    }
-
-    .td-name { font-weight: 700; white-space: nowrap; }
-
-    .td-name button {
-      background: none;
-      border: none;
-      font-weight: 700;
-      font-size: 13px;
-      color: #3a2e1e;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .td-name button:hover { color: #7a3010; }
-    .td-type, .td-char { white-space: nowrap; }
-
-    .char-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .badge-red    { background: #c03020; }
-    .badge-blue   { background: #2060c0; }
-    .badge-orange { background: #c07020; }
-    .badge-purple { background: #7030a0; }
-    .badge-green  { background: #207040; }
-    .badge-teal   { background: #206070; }
-
-    .changes-cell { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .change-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      background: #c0a878;
-      border: 1px solid #9a8050;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .change-tag:hover { background: #a08858; color: #fff; }
-
-    /* ── Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: #d9c9aa;
-      border-radius: 8px;
-      width: 540px;
-      max-width: 96vw;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px 22px 24px;
-      position: relative;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      background: none;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      color: #5a4a30;
-    }
-
-    .modal-close:hover { color: #c03020; }
-
-    .modal-weapon-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-    .modal-weapon-type { font-size: 12px; color: #6a5a40; margin-bottom: 10px; }
-
-    .modal-char-badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #fff;
-      margin-left: 6px;
-    }
-
-    .star-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-
-    .star-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #8a7060;
-      background: #c9b99a;
-      cursor: pointer;
-      font-size: 12px;
-      min-width: 52px;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .star-btn:hover { background: #b09070; }
-
-    .star-btn.active {
-      background: #7a6050;
-      color: #fff;
-      border-color: #5a4030;
-    }
-
-    .star-btn .star-label { font-weight: 700; font-size: 13px; }
-
-    .star-btn .star-change {
-      font-size: 9px;
-      color: #c03020;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    .star-btn.active .star-change { color: #ffb080; }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .stats-box {
-      background: #c9b99a;
-      border-radius: 6px;
-      padding: 10px 14px;
-    }
-
-    .stats-box-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: #6a5a40;
-      margin-bottom: 8px;
-    }
-
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .stat-value { font-weight: 700; color: #3a7030; }
-    .stat-prev { font-size: 11px; color: #7a6a50; margin-left: 4px; }
-
-    .char-tabs {
-      display: flex;
-      margin-bottom: 14px;
-      border-bottom: 2px solid #8a7060;
-    }
-
-    .char-tab {
-      flex: 1;
-      padding: 8px 0;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #c9b99a;
-      border: none;
-      border-radius: 4px 4px 0 0;
-      color: #5a4a30;
-      transition: background 0.15s;
-    }
-
-    .char-tab.active {
-      background: #d9c9aa;
-      border-bottom: 2px solid #d9c9aa;
-      margin-bottom: -2px;
-      color: #3a2e1e;
-    }
-
-    .char-tab:hover { background: #cfc0a0; }
-
-    .skill-section { margin-top: 4px; }
-    .skill-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-
-    .skill-desc-box {
-      background: #c9b99a;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 12px;
-      line-height: 1.7;
-      margin-bottom: 10px;
-    }
-
-    .related-buffs-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #6a5a40;
-      margin-bottom: 8px;
-    }
-
-    .buff-box {
-      background: #c9b99a;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 12px;
-      line-height: 1.7;
-      margin-bottom: 8px;
-    }
-
-    .buff-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
-
-    .buff-tag {
-      display: inline-block;
-      padding: 1px 6px;
-      border-radius: 10px;
-      font-size: 10px;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .tag-shield { background: #4080c0; color: #fff; }
-    .tag-undispellable { background: #7a3010; color: #fff; }
-    .tag-heal-block { background: #a03060; color: #fff; }
-
-    .modal::-webkit-scrollbar { width: 6px; }
-    .modal::-webkit-scrollbar-track { background: #c9b99a; }
-    .modal::-webkit-scrollbar-thumb { background: #8a7060; border-radius: 3px; }
-
-    /* ══════════════════════════════════════════
-       REFORGE PAGE STYLES
-    ══════════════════════════════════════════ */
-    .gold-rule {
-      height: 1px;
-      background: linear-gradient(to right, transparent, #a08050, transparent);
-      margin: 14px 0;
-    }
-
-    .codex-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .codex-tab {
-      padding: 6px 18px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      color: #3a2e1e;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .codex-tab.active {
-      background: #8a6840;
-      color: #fff;
-      border-color: #6a4820;
-    }
-
-    .codex-tab:hover:not(.active) { background: #c0a878; }
-
-    .toolbar-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .cost-strip { display: flex; align-items: center; flex-wrap: nowrap; }
-
-    .grade-node {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 28px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      user-select: none;
-    }
-
-    .grade-node.selected {
-      background: #8a6840;
-      color: #fff;
-      border-color: #6a4820;
-    }
-
-    .grade-node:hover:not(.selected) { background: #c0a878; }
-
-    .grade-connector { width: 8px; height: 2px; background: #a89070; }
-    .grade-connector.selected { background: #8a6840; }
-
-    .grade-path-reset {
-      margin-left: 10px;
-      padding: 4px 10px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 11px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .grade-path-reset:hover { background: #c0a878; }
-
-    .cost-divider { width: 1px; height: 24px; background: #a89070; margin: 0 10px; }
-
-    .cost-inline {
-      font-size: 12px;
-      color: #5a4a30;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    .cost-label { font-weight: 700; color: #3a2e1e; margin-right: 4px; }
-    .cost-sep { color: #a89070; }
-    .cost-eld { font-weight: 700; color: #8a5020; }
-    .cost-empty { color: #a89070; font-style: italic; }
-
-    .toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: auto;
-    }
-
-    .sort-btn {
-      padding: 4px 10px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 11px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .sort-btn.active { background: #8a6840; color: #fff; }
-    .sort-btn:hover:not(.active) { background: #c0a878; }
-
-    .search-wrap { position: relative; }
-
-    .search-wrap svg {
-      position: absolute;
-      left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 13px;
-      height: 13px;
-      color: #8a7060;
-      pointer-events: none;
-    }
-
-    .reforge-search {
-      padding: 5px 28px 5px 26px;
-      border: 1px solid #8a7060;
-      border-radius: 4px;
-      background: #d9c9aa;
-      font-size: 12px;
-      color: #3a2e1e;
-      width: 160px;
-    }
-
-    .reforge-search:focus { outline: none; border-color: #6a4820; }
-
-    .search-clear {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #8a7060;
-      font-size: 13px;
-      line-height: 1;
-    }
-
-    .reforge-table-wrap {
-      overflow-x: auto;
-      border-radius: 6px;
-      border: 1px solid #a89070;
-    }
-
-    table.reforge-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    .reforge-table th {
-      background: #b0986a;
-      color: #fff;
-      padding: 7px 10px;
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-
-    .reforge-table th:first-child { text-align: left; min-width: 180px; }
-
-    .reforge-table td {
-      padding: 5px 10px;
-      border-bottom: 1px solid #c0aa80;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .reforge-table td:first-child { text-align: left; font-size: 11px; color: #3a2e1e; }
-
-    .reforge-table tr:nth-child(even) td { background: #d4c4a0; }
-    .reforge-table tr:hover td { background: #c8b888; }
-
-    .tier-header-row td {
-      background: #8a7050 !important;
-      color: #fff;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1px;
-      padding: 4px 10px;
-    }
-
-    .cell-a  { background: #6080c0 !important; color: #fff; font-weight: 700; }
-    .cell-ap { background: #4060a0 !important; color: #fff; font-weight: 700; }
-    .cell-s  { background: #c07020 !important; color: #fff; font-weight: 700; }
-    .cell-sp { background: #a05010 !important; color: #fff; font-weight: 700; }
-
-    .result-count { font-size: 11px; color: #7a6a50; margin-bottom: 8px; }
-
-    .scroll-hint {
-      font-size: 10px;
-      color: #a89070;
-      margin-bottom: 6px;
-      display: none;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 16px;
-      font-size: 11px;
-      color: #8a7060;
-      border-top: 1px solid #a89070;
-      margin-top: 24px;
-    }
-
-    @media (max-width: 640px) {
-      .scroll-hint { display: block; }
-      .toolbar-right { margin-left: 0; width: 100%; }
-    }
+   /* ──Reset & Base (기존 코드 유지) ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
+  
+  /* [변경] 메인 배경색: 깊은 심연의 다크 네이비 */
+  background-color: #0d1117; 
+  /* [변경] 기본 글자색: 아주 밝은 회색 (가독성 확보) */
+  color: #c9d1d9; 
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── Top Nav ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 24px;
+  
+  /* [변경] 네비게이션 배경색: 약간 더 밝은 다크 네이비 */
+  background-color: #161b22; 
+  /* [변경] 하단 테두리: 창세기전 시그니처 청록색 포인트 */
+  border-bottom: 2px solid #00f2ff; 
+  
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /* 그림자 효과로 입체감 추가 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.site-title {
+  font-size: 16px;
+  font-weight: 700;
+  /* [변경] 사이트 제목: 포인트 청록색 */
+  color: #00f2ff; 
+  /* 은은한 네온 효과 */
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+}
+
+nav button {
+  font-size: 12px;
+  padding: 6px 14px;
+  /* [변경] 버튼 테두리 및 배경 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #21262d; 
+  color: #c9d1d9; 
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* [변경] 호버 및 활성화 상태: 청록색으로 반전 */
+nav button:hover, nav button.active {
+  background: #00f2ff; 
+  color: #0d1117; /* 글자색은 어둡게 */
+  border-color: #00f2ff;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+/* ── Page sections (기존 유지) ── */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ── Main ── */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.page-header {
+  margin-bottom: 20px;
+  /* 하단에 은은한 구분선 추가 */
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 15px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  /* [변경] 페이지 제목: 밝은 청록색 */
+  color: #4ed9ff; 
+}
+
+.page-subtitle-en {
+  font-size: 12px;
+  letter-spacing: 3px;
+  /* [변경] 영문 부제목: 톤 다운된 블루 */
+  color: #58a6ff; 
+  margin-left: 8px;
+}
+
+.page-desc {
+  font-size: 13px;
+  /* [변경] 설명글: 어두운 회색 */
+  color: #8b949e; 
+  margin-top: 6px;
+}
+
+/* ── Filters ── */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: #161b22;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+}
+
+.filters select, .filters input[type="text"], .filters label {
+  padding: 6px 12px;
+  /* [변경] 필터 요소들 다크하게 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #0d1117; 
+  font-size: 13px;
+  color: #c9d1d9; 
+}
+
+.filters input[type="text"]::placeholder { color: #484f58; }
+
+/* ── Weapon Table (어두운 테마) ── */
+.weapon-table-wrap {
+  /* [변경] 테이블 테두리 */
+  border: 1px solid #30363d; 
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+table.weapon-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* [변경] 테이블 배경색: 다크 그레이 */
+  background: #161b22; 
+}
+
+table.weapon-table thead th {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  /* [변경] 헤더 글자색: 포인트 청록색 */
+  color: #00f2ff; 
+  /* [변경] 헤더 배경색: 더 어두운 색 */
+  background: #0d1117; 
+  border-bottom: 2px solid #30363d; 
+}
+
+table.weapon-table tbody tr {
+  /* [변경] 행 구분선색 변경 */
+  border-bottom: 1px solid #21262d; 
+  transition: background 0.15s;
+}
+
+table.weapon-table tbody tr:last-child { border-bottom: none; }
+
+/* [변경] 호버 시 은은한 블루 빛 */
+table.weapon-table tbody tr:hover { background: rgba(0, 242, 255, 0.05); }
+
+table.weapon-table td {
+  padding: 10px 14px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.td-name { font-weight: 700; white-space: nowrap; }
+
+.td-name button {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  /* [변경] 무기 이름: 밝은 하늘색 */
+  color: #4ed9ff; 
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* [변경] 이름 호버 시 금색으로 변경 (아이템 등급 느낌) */
+.td-name button:hover { color: #d4af37; text-decoration: none;}
+
+.td-type, .td-char { white-space: nowrap; color: #8b949e;}
+
+.char-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  /* 글자에 그림자 주어 선명하게 */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* 배지 컬러 톤 다운 (다크 모드에 맞춤) */
+.badge-red    { background: #a02010; }
+.badge-blue   { background: #1040a0; }
+.badge-orange { background: #a05010; }
+.badge-purple { background: #501090; }
+.badge-green  { background: #105020; }
+.badge-teal   { background: #104050; }
+
+.changes-cell { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.change-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  /* [변경] 태그 다크하게 */
+  background: #21262d; 
+  border: 1px solid #30363d; 
+  color: #8b949e;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+/* [변경] 태그 호버 시 금색 포인트 */
+.change-tag:hover { background: #d4af37; border-color: #f1e05a; color: #000; }
+
+/* ── Modal (Dark Theme) ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  /* [변경] 오버레이 더 어둡게 */
+  background: rgba(0,0,0,0.8); 
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px); /* 배경 흐림 효과 */
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  /* [변경] 모달 배경: 가장 어두운 네이비 */
+  background: #0d1117; 
+  border-radius: 8px;
+  width: 540px;
+  max-width: 96vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 22px 24px;
+  position: relative;
+  /* [변경] 청록색 그림자로 네온 효과 */
+  border: 1px solid #00f2ff;
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  /* [변경] 닫기 버튼 색상 */
+  color: #8b949e; 
+}
+
+.modal-close:hover { color: #00f2ff; }
+
+.modal-weapon-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; color: #fff;}
+.modal-weapon-type { font-size: 12px; color: #8b949e; margin-bottom: 12px; }
+
+.modal-char-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.star-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.star-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  /* [변경] 스타 버튼 다크하게 */
+  border: 1px solid #30363d; 
+  background: #161b22; 
+  color: #c9d1d9;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 52px;
+  transition: all 0.15s;
+}
+
+.star-btn:hover { background: #21262d; border-color: #8b949e;}
+
+/* [변경] 활성화된 스타 버튼: 금색(성장) 포인트 */
+.star-btn.active {
+  background: #d4af37; 
+  color: #000; 
+  border-color: #f1e05a;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.star-btn .star-label { font-weight: 700; font-size: 13px; }
+
+.star-btn .star-change {
+  font-size: 9px;
+  /* [변경] 변경점 텍스트: 어두운 빨강 */
+  color: #a02010; 
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* 활성화 시 변경점 텍스트 색상 조정 */
+.star-btn.active .star-change { color: #601000; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stats-box {
+  /* [변경] 스탯 박스 다크하게 */
+  background: #161b22; 
+  border-radius: 6px;
+  padding: 12px 14px;
+  border: 1px solid #30363d;
+}
+
+.stats-box-title {
+  font-size: 11px;
+  font-weight: 600;
+  /* [변경] 박스 제목 블루 회색 */
+  color: #8b949e; 
+  margin-bottom: 10px;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 4px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #c9d1d9;
+}
+
+/* [변경] 스탯 값: 연한 초록색 (긍정적 수치) */
+.stat-value { font-weight: 700; color: #3fb950; }
+/* [변경] 이전 스탯 값: 어두운 회색 */
+.stat-prev { font-size: 11px; color: #484f58; margin-left: 4px; }
+
+.char-tabs {
+  display: flex;
+  margin-bottom: 16px;
+  /* [변경] 탭 구분선 청록색 */
+  border-bottom: 2px solid #00f2ff; 
+}
+
+.char-tab {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  /* [변경] 비활성 탭 다크 */
+  background: #161b22; 
+  border: none;
+  border-radius: 4px 4px 0 0;
+  color: #8b949e; 
+  transition: all 0.15s;
+  margin-right: 2px;
+}
+
+/* [변경] 활성 탭: 네비게이션과 맞춤 */
+.char-tab.active {
+  background: #00f2ff; 
+  border-bottom: 2px solid #00f2ff; 
+  margin-bottom: -2px;
+  color: #0d1117; 
+}
+
+.char-tab:hover:not(.active) { background: #21262d; color: #fff;}
+
+.skill-section { margin-top: 4px; }
+/* [변경] 스킬 이름: 밝은 하늘색 */
+.skill-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #4ed9ff; }
+
+.skill-desc-box {
+  /* [변경] 설명 박스 다크 */
+  background: #161b22; 
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.8; /* 줄간격 넓혀 가독성 확보 */
+  margin-bottom: 12px;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+}
+
+.related-buffs-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b949e; 
+  margin-bottom: 10px;
+}
+
+.buff-box {
+  /* [변경] 버프 박스 다크 */
+  background: #0d1117; 
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 10px;
+  border: 1px solid #21262d;
+  color: #c9d1d9;
+}
+
+.buff-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: #fff;}
+
+.buff-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* 버프 태그 컬러 조정 */
+.tag-shield { background: #1040a0; color: #fff; }
+.tag-undispellable { background: #a02010; color: #fff; }
+.tag-heal-block { background: #a01050; color: #fff; }
+
+.modal::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-track { background: #0d1117; }
+/* [변경] 스크롤바 청록색 포인트 */
+.modal::-webkit-scrollbar-thumb { background: #00f2ff; border-radius: 3px; }
+
+/* ══════════════════════════════════════════
+     REFORGE PAGE STYLES (다크 테마 적용)
+  ══════════════════════════════════════════ */
+.gold-rule {
+  height: 1px;
+  /* [변경] 구분선 그라데이션: 어두운 금색 포인트 */
+  background: linear-gradient(to right, transparent, #d4af37, transparent); 
+  margin: 16px 0;
+}
+
+.codex-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.codex-tab {
+  padding: 8px 20px;
+  /* [변경] 리포지 탭 다크 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #161b22; 
+  color: #8b949e; 
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+/* [변경] 활성 탭: 금색 포인트 */
+.codex-tab.active {
+  background: #d4af37; 
+  color: #000; 
+  border-color: #f1e05a;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.codex-tab:hover:not(.active) { background: #21262d; color: #fff;}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  background-color: #161b22;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+}
+
+.cost-strip { display: flex; align-items: center; flex-wrap: nowrap; }
+
+.grade-node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 28px;
+  /* [변경] 등급 노드 다크 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #0d1117; 
+  font-size: 11px;
+  font-weight: 600;
+  color: #8b949e;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+/* [변경] 선택된 노드: 금색 포인트 */
+.grade-node.selected {
+  background: #d4af37; 
+  color: #000; 
+  border-color: #f1e05a;
+}
+
+.grade-node:hover:not(.selected) { background: #21262d; color: #fff; }
+
+/* [변경] 노드 연결선 */
+.grade-connector { width: 8px; height: 2px; background: #30363d; }
+.grade-connector.selected { background: #d4af37; }
+
+.grade-path-reset {
+  margin-left: 10px;
+  padding: 5px 12px;
+  /* [변경] 리셋 버튼 다크 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #21262d; 
+  color: #c9d1d9;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.grade-path-reset:hover { background: #30363d; }
+
+/* [변경] 비용 구분선 */
+.cost-divider { width: 1px; height: 24px; background: #30363d; margin: 0 10px; }
+
+.cost-inline {
+  font-size: 12px;
+  color: #c9d1d9; 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.cost-label { font-weight: 700; color: #00f2ff; margin-right: 4px; }
+.cost-sep { color: #484f58; }
+/* [변경] 에르드 비용: 금색 */
+.cost-eld { font-weight: 700; color: #f1e05a; }
+.cost-empty { color: #8b949e; font-style: italic; }
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.sort-btn {
+  padding: 5px 12px;
+  /* [변경] 정렬 버튼 다크 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #21262d; 
+  color: #c9d1d9;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+/* [변경] 활성 정렬: 금색 포인트 */
+.sort-btn.active { background: #d4af37; color: #000; border-color: #f1e05a; }
+.sort-btn:hover:not(.active) { background: #30363d; }
+
+.search-wrap { position: relative; }
+
+.search-wrap svg {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  /* [변경] 아이콘 색상 */
+  color: #8b949e; 
+  pointer-events: none;
+}
+
+.reforge-search {
+  padding: 6px 28px 6px 28px;
+  /* [변경] 검색창 다크 */
+  border: 1px solid #30363d; 
+  border-radius: 4px;
+  background: #0d1117; 
+  font-size: 12px;
+  color: #c9d1d9; 
+  width: 180px;
+}
+
+/* [변경] 검색창 포커스 시 청록색 포인트 */
+.reforge-search:focus { outline: none; border-color: #00f2ff; box-shadow: 0 0 5px rgba(0, 242, 255, 0.3); }
+
+.search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8b949e; 
+  font-size: 13px;
+  line-height: 1;
+}
+.search-clear:hover { color: #fff; }
+
+.reforge-table-wrap {
+  overflow-x: auto;
+  border-radius: 6px;
+  /* [변경] 테이블 테두리 */
+  border: 1px solid #30363d; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+table.reforge-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.reforge-table th {
+  /* [변경] 테이블 헤더 다크 */
+  background: #0d1117; 
+  color: #c9d1d9; 
+  padding: 10px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 2px solid #30363d;
+}
+
+.reforge-table th:first-child { text-align: left; min-width: 180px; color: #00f2ff;}
+
+.reforge-table td {
+  padding: 8px 10px;
+  /* [변경] 줄 구분선색 */
+  border-bottom: 1px solid #21262d; 
+  text-align: center;
+  white-space: nowrap;
+  color: #c9d1d9;
+}
+
+.reforge-table td:first-child { text-align: left; font-size: 11px; color: #fff; background: #161b22; }
+
+/* [변경] 홀수/짝수 행 배경색 교차 (가독성) */
+.reforge-table tr:nth-child(even) td { background: #1c2128; }
+/* [변경] 호버 시 더 밝은 회색 */
+.reforge-table tr:hover td { background: #2d333b !important; }
+
+/* [변경] 티어 헤더 행 다크/블루 포인트 */
+.tier-header-row td {
+  background: #0d1117 !important; 
+  color: #58a6ff; 
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #30363d;
+}
+
+/* [변경] 등급 컬러 셀 (가독성 고려하여 톤 조정) */
+.cell-a  { background: #103060 !important; color: #fff; font-weight: 700; }
+.cell-ap { background: #104080 !important; color: #fff; font-weight: 700; }
+.cell-s  { background: #804010 !important; color: #fff; font-weight: 700; }
+.cell-sp { background: #a05010 !important; color: #fff; font-weight: 700; }
+
+.result-count { font-size: 11px; color: #8b949e; margin-bottom: 8px; }
+
+.scroll-hint {
+  font-size: 10px;
+  color: #484f58; 
+  margin-bottom: 6px;
+  display: none;
+}
+
+/* ── Footer (Dark Theme) ── */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  /* [변경] 푸터 색상 */
+  color: #484f58; 
+  border-top: 1px solid #30363d; 
+  margin-top: 24px;
+  background-color: #161b22;
+}
+
+@media (max-width: 640px) {
+  .scroll-hint { display: block; }
+  .toolbar-right { margin-left: 0; width: 100%; }
+}
   </style>
 </head>
 <body>
