@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genesis Mobile - Weapon Codex</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Noto Sans', sans-serif;
+      background-color: #c9b99a;
+      color: #3a2e1e;
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Top Nav ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background-color: #c9b99a;
+      border-bottom: 1px solid #a89070;
+    }
+
+    .site-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3a2e1e;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    nav a {
+      font-size: 12px;
+      padding: 4px 12px;
+      border: 1px solid #8a7060;
+      border-radius: 4px;
+      background: #d9c9aa;
+      color: #3a2e1e;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      background: #b09070;
+      color: #fff;
+    }
+
+    /* ── Page Content ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .page-subtitle-en {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #7a6a50;
+      margin-left: 8px;
+    }
+
+    .page-desc {
+      font-size: 12px;
+      color: #6a5a40;
+      margin-top: 4px;
+    }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filters select {
+      padding: 5px 10px;
+      border: 1px solid #8a7060;
+      border-radius: 4px;
+      background: #d9c9aa;
+      font-size: 13px;
+      color: #3a2e1e;
+      cursor: pointer;
+    }
+
+    .filters label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border: 1px solid #8a7060;
+      border-radius: 4px;
+      background: #d9c9aa;
+    }
+
+    .filters input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 5px 12px;
+      border: 1px solid #8a7060;
+      border-radius: 4px;
+      background: #d9c9aa;
+      font-size: 13px;
+      color: #3a2e1e;
+    }
+
+    .filters input[type="text"]::placeholder {
+      color: #9a8a70;
+    }
+
+    /* ── Table ── */
+    .weapon-table-wrap {
+      border: 1px solid #8a7060;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #d9c9aa;
+    }
+
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #5a4a30;
+      background: #c9b99a;
+      border-bottom: 1px solid #8a7060;
+    }
+
+    tbody tr {
+      border-bottom: 1px dashed #b09070;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: #cfc0a0; }
+
+    td {
+      padding: 10px 14px;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .td-name {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .td-name button {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      color: #3a2e1e;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .td-name button:hover { color: #7a3010; }
+
+    .td-type, .td-char { white-space: nowrap; }
+
+    .char-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .badge-red    { background: #c03020; }
+    .badge-blue   { background: #2060c0; }
+    .badge-orange { background: #c07020; }
+    .badge-purple { background: #7030a0; }
+    .badge-green  { background: #207040; }
+    .badge-teal   { background: #206070; }
+
+    .changes-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .change-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      background: #c0a878;
+      border: 1px solid #9a8050;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .change-tag:hover { background: #a08858; color: #fff; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #d9c9aa;
+      border-radius: 8px;
+      width: 540px;
+      max-width: 96vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px 22px 24px;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #5a4a30;
+    }
+
+    .modal-close:hover { color: #c03020; }
+
+    .modal-weapon-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .modal-weapon-type {
+      font-size: 12px;
+      color: #6a5a40;
+      margin-bottom: 10px;
+    }
+
+    .modal-char-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      margin-left: 6px;
+    }
+
+    /* Star buttons */
+    .star-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .star-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #8a7060;
+      background: #c9b99a;
+      cursor: pointer;
+      font-size: 12px;
+      min-width: 52px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .star-btn:hover { background: #b09070; }
+
+    .star-btn.active {
+      background: #7a6050;
+      color: #fff;
+      border-color: #5a4030;
+    }
+
+    .star-btn .star-label {
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .star-btn .star-change {
+      font-size: 9px;
+      color: #c03020;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .star-btn.active .star-change { color: #ffb080; }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stats-box {
+      background: #c9b99a;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .stats-box-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6a5a40;
+      margin-bottom: 8px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      color: #3a7030;
+    }
+
+    .stat-prev {
+      font-size: 11px;
+      color: #7a6a50;
+      margin-left: 4px;
+    }
+
+    /* Character tab */
+    .char-tabs {
+      display: flex;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #8a7060;
+    }
+
+    .char-tab {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #c9b99a;
+      border: none;
+      border-radius: 4px 4px 0 0;
+      color: #5a4a30;
+      transition: background 0.15s;
+    }
+
+    .char-tab.active {
+      background: #d9c9aa;
+      border-bottom: 2px solid #d9c9aa;
+      margin-bottom: -2px;
+      color: #3a2e1e;
+    }
+
+    .char-tab:hover { background: #cfc0a0; }
+
+    /* Skill section */
+    .skill-section { margin-top: 4px; }
+
+    .skill-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .skill-desc-box {
+      background: #c9b99a;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .related-buffs-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6a5a40;
+      margin-bottom: 8px;
+    }
+
+    .buff-box {
+      background: #c9b99a;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .buff-name {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .buff-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .tag-shield { background: #4080c0; color: #fff; }
+    .tag-undispellable { background: #7a3010; color: #fff; }
+    .tag-heal-block { background: #a03060; color: #fff; }
+
+    /* Scrollbar */
+    .modal::-webkit-scrollbar { width: 6px; }
+    .modal::-webkit-scrollbar-track { background: #c9b99a; }
+    .modal::-webkit-scrollbar-thumb { background: #8a7060; border-radius: 3px; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 11px;
+      color: #8a7060;
+      border-top: 1px solid #a89070;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <span class="site-title">Genesis Mobile</span>
+  <nav>
+    <a href="#" class="active">Weapon Codex</a>
+    <a href="#">Weapon Refinement</a>
+  </nav>
+</header>
+
+<!-- ── Main ── -->
+<main>
+  <div class="page-header">
+    <div>
+      <span class="page-title">Weapon Codex</span>
+      <span class="page-subtitle-en">WEAPON CODEX</span>
+    </div>
+    <div class="page-desc">Detailed weapon information and skill comparison by star grade</div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <select id="typeFilter" onchange="filterWeapons()">
+      <option value="all">All Weapons</option>
+      <option value="Greatsword">Greatsword</option>
+      <option value="Spear">Spear</option>
+      <option value="Pistol">Pistol</option>
+      <option value="Sword">Sword</option>
+      <option value="Staff">Staff</option>
+    </select>
+    <label>
+      <input type="checkbox" id="exclusiveFilter" onchange="filterWeapons()" />
+      Exclusive Only
+    </label>
+    <input type="text" id="searchInput" placeholder="Search by name, type, or character" oninput="filterWeapons()" />
+  </div>
+
+  <!-- Table -->
+  <div class="weapon-table-wrap">
+    <table id="weaponTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Exclusive Character</th>
+          <th>Key Changes</th>
+        </tr>
+      </thead>
+      <tbody id="weaponTableBody">
+        <!-- Rows injected by JS -->
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>Genesis Mobile — Weapon Codex (English)</footer>
+
+<!-- ── Modal ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  WEAPON DATA
+// ══════════════════════════════════════════════
+const weapons = [
+  {
+    id: 1,
+    name: "Fang of Doom",
+    type: "Greatsword",
+    attackType: "Slash",
+    exclusive: true,
+    character: "Eustacia of Doom",
+    charBadge: "badge-red",
+    changes: [
+      { star: 3, text: "★3 Extra Action Cooldown 2 → 1" },
+      { star: 5, text: "★5 Thirst's Embrace (50% ATK Shield, DMG Taken -10%)" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "ATK%", value: "10%" },
+          { name: "Physical Penetration%", value: "10%" }
+        ],
+        baseStats: { hp: 122, atk: 364, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 1 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 1",
+            lines: [
+              "ATK +3%.",
+              "CRIT Rate +3%.",
+              "At the start of the turn, if at max stacks, gain Extra Action (Cooldown 2).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "ATK%", value: "11%" },
+          { name: "Physical Penetration%", value: "11%" }
+        ],
+        baseStats: { hp: 123, atk: 367, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 2 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 2",
+            lines: [
+              "ATK +4%.",
+              "CRIT Rate +4%.",
+              "At the start of the turn, if at max stacks, gain Extra Action (Cooldown 2).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "ATK%", value: "12%", prev: "11%" },
+          { name: "Physical Penetration%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 124, atk: 371, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 3 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 3",
+            lines: [
+              "ATK +5%.",
+              "CRIT Rate +5%.",
+              "At the start of the turn, if at max stacks, gain Extra Action (Cooldown 1).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "ATK%", value: "13%", prev: "12%" },
+          { name: "Physical Penetration%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 125, atk: 374, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 4 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 4",
+            lines: [
+              "ATK +6%.",
+              "CRIT Rate +6%.",
+              "At the start of the turn, if at max stacks, gain Extra Action (Cooldown 1).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "ATK%", value: "14%", prev: "13%" },
+          { name: "Physical Penetration%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 127, atk: 378, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 5 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 5",
+            lines: [
+              "ATK +7%.",
+              "CRIT Rate +7%.",
+              "At the start of the turn, if at max stacks, gain Extra Action and Thirst's Embrace 1 Shield (Cooldown 1).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ],
+            tags: []
+          },
+          {
+            name: "Thirst's Embrace 1",
+            lines: [
+              "Shield equal to 50% of ATK.",
+              "DMG Taken -10%.",
+              "Lasts 2 turns.",
+              "Undispellable."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "ATK%", value: "15%", prev: "14%" },
+          { name: "Physical Penetration%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 129, atk: 382, statName: "ATK" },
+        skillName: "Doom's Hunger",
+        skillDesc: "When taking damage, or when an enemy within 2 tiles ends their action, gain Doom's Thirst 6 effect.",
+        buffs: [
+          {
+            name: "Doom's Thirst 6",
+            lines: [
+              "ATK +8%.",
+              "CRIT Rate +8%.",
+              "At the start of the turn, if at max stacks, gain Extra Action and Thirst's Embrace 1 Shield (Cooldown 1).",
+              "Removed after combat attack.",
+              "Lasts 2 turns.",
+              "Max 4 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Thirst's Embrace 1",
+            lines: [
+              "Shield equal to 50% of ATK.",
+              "DMG Taken -10%.",
+              "Lasts 2 turns.",
+              "Undispellable."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 2,
+    name: "Zabir",
+    type: "Spear",
+    attackType: "Pierce",
+    exclusive: true,
+    character: "Ridel Hart",
+    charBadge: "badge-blue",
+    changes: [
+      { star: 2, text: "★2 Counter Range +1" },
+      { star: 3, text: "★3 War Cry Skill Cost -1" },
+      { star: 4, text: "★4 War Cry Skill Cooldown -1 on cast" },
+      { star: 6, text: "★6 Death's Blade 1 → 2 (HP Recovery after Basic Attack)" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "ATK%", value: "10%" },
+          { name: "Max HP%", value: "10%" }
+        ],
+        baseStats: { hp: 127, atk: 347, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +10%.\nAfter using a skill, gain Death's Blade 1 effect.",
+        buffs: [
+          {
+            name: "Death's Blade 1",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "Removed after Basic Attack.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "ATK%", value: "11%", prev: "10%" },
+          { name: "Max HP%", value: "11%", prev: "10%" }
+        ],
+        baseStats: { hp: 129, atk: 351, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +15%.\nAfter using a skill, gain Death's Blade 1 effect.\nCounter Range +1.",
+        buffs: [
+          {
+            name: "Death's Blade 1",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "Removed after Basic Attack.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "ATK%", value: "12%", prev: "11%" },
+          { name: "Max HP%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 130, atk: 354, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +15%.\nAfter using a skill, gain Death's Blade 1 effect.\nCounter Range +1.\nWar Cry Skill Cost -1.",
+        buffs: [
+          {
+            name: "Death's Blade 1",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "Removed after Basic Attack.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "ATK%", value: "13%", prev: "12%" },
+          { name: "Max HP%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 131, atk: 358, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +20%.\nAfter using a skill, gain Death's Blade 1 effect.\nCounter Range +1.\nWar Cry Skill Cost -1.\nWar Cry Skill Cooldown -1 on cast.",
+        buffs: [
+          {
+            name: "Death's Blade 1",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "Removed after Basic Attack.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "ATK%", value: "14%", prev: "13%" },
+          { name: "Max HP%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 132, atk: 362, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +20%.\nAfter using a skill, gain Death's Blade 1 effect.\nCounter Range +1.\nWar Cry Skill Cost -1.\nWar Cry Skill Cooldown -1 on cast.",
+        buffs: [
+          {
+            name: "Death's Blade 1",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "Removed after Basic Attack.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "ATK%", value: "15%", prev: "14%" },
+          { name: "Max HP%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 133, atk: 365, statName: "ATK" },
+        skillName: "Death Fang",
+        skillDesc: "ATK / Physical Penetration +25%.\nAfter using a skill, gain Death's Blade 2 effect.\nCounter Range +1.\nWar Cry Skill Cost -1.\nWar Cry Skill Cooldown -1 on cast.",
+        buffs: [
+          {
+            name: "Death's Blade 2",
+            lines: [
+              "Basic Attack DMG +30%.",
+              "Counter DMG bonus increases by 100% of Basic Attack DMG bonus.",
+              "After Basic Attack, recover HP equal to 30% of ATK, then removed.",
+              "Undispellable."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 3,
+    name: "Crème de Violette",
+    type: "Pistol",
+    attackType: "Pierce",
+    exclusive: true,
+    character: "Ann Millennium",
+    charBadge: "badge-orange",
+    changes: [
+      { star: 3, text: "★3 Preemptive Strike" },
+      { star: 4, text: "★4 Max Bullet Count +1 → +2" },
+      { star: 5, text: "★5 Exploit Weakness 1 (CRIT DMG Taken +10%)" },
+      { star: 6, text: "★6 Crimson Muzzle (Physical Lifesteal +20% on Bullet-consuming attacks)" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "ATK%", value: "10%" },
+          { name: "Max HP%", value: "10%" }
+        ],
+        baseStats: { hp: 116, atk: 364, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 1 effect.\nCRIT DMG Taken -10%.\nMax Bullet Count +1.",
+        buffs: [
+          {
+            name: "Barrel Heat 1",
+            lines: [
+              "ATK +5%.",
+              "Physical Penetration +5%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "ATK%", value: "11%", prev: "10%" },
+          { name: "Max HP%", value: "11%", prev: "10%" }
+        ],
+        baseStats: { hp: 117, atk: 368, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 2 effect.\nCRIT DMG Taken -10%.\nMax Bullet Count +1.",
+        buffs: [
+          {
+            name: "Barrel Heat 2",
+            lines: [
+              "ATK +7%.",
+              "Physical Penetration +7%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "ATK%", value: "12%", prev: "11%" },
+          { name: "Max HP%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 118, atk: 371, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 3 effect.\nCRIT DMG Taken -10%.\nMax Bullet Count +1.\nPreemptive Strike.",
+        buffs: [
+          {
+            name: "Barrel Heat 3",
+            lines: [
+              "ATK +8%.",
+              "Physical Penetration +8%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Preemptive Strike",
+            lines: [
+              "Attack first when targeted by an enemy's combat attack."
+            ]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "ATK%", value: "13%", prev: "12%" },
+          { name: "Max HP%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 119, atk: 375, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 4 effect.\nCRIT DMG Taken -15%.\nMax Bullet Count +2.\nPreemptive Strike.",
+        buffs: [
+          {
+            name: "Barrel Heat 4",
+            lines: [
+              "ATK +9%.",
+              "Physical Penetration +9%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Preemptive Strike",
+            lines: [
+              "Attack first when targeted by an enemy's combat attack."
+            ]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "ATK%", value: "14%", prev: "13%" },
+          { name: "Max HP%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 120, atk: 378, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 5 effect.\nBefore combat, inflict Exploit Weakness 1 on target.\nCRIT DMG Taken -15%.\nMax Bullet Count +2.\nPreemptive Strike.",
+        buffs: [
+          {
+            name: "Barrel Heat 5",
+            lines: [
+              "ATK +9%.",
+              "Physical Penetration +9%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Preemptive Strike",
+            lines: [
+              "Attack first when targeted by an enemy's combat attack."
+            ]
+          },
+          {
+            name: "Exploit Weakness 1",
+            lines: [
+              "CRIT DMG Taken +10%.",
+              "Lasts 2 turns."
+            ]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "ATK%", value: "15%", prev: "14%" },
+          { name: "Max HP%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 122, atk: 382, statName: "ATK" },
+        skillName: "Heated Barrel",
+        skillDesc: "Before using a skill, gain Barrel Heat 6 effect.\nBefore combat, inflict Exploit Weakness 2 on target.\nCRIT DMG Taken -20%.\nMax Bullet Count +2.\nPreemptive Strike.\nCrimson Muzzle effect active.",
+        buffs: [
+          {
+            name: "Preemptive Strike",
+            lines: [
+              "Attack first when targeted by an enemy's combat attack."
+            ]
+          },
+          {
+            name: "Exploit Weakness 2",
+            lines: [
+              "CRIT DMG Taken +20%.",
+              "Lasts 2 turns."
+            ]
+          },
+          {
+            name: "Crimson Muzzle",
+            lines: [
+              "Physical Lifesteal +20% on Bullet-consuming attacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Barrel Heat 6",
+            lines: [
+              "ATK +10%.",
+              "Physical Penetration +10%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 4,
+    name: "Last Vow",
+    type: "Sword",
+    attackType: "Slash",
+    exclusive: true,
+    character: "Iolinn the Penitent",
+    charBadge: "badge-purple",
+    changes: [],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "10%" },
+          { name: "Physical Penetration%", value: "10%" }
+        ],
+        baseStats: { hp: 125, atk: 352, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 1 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 10%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 10%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 1",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +20% on AoE attacks.",
+              "Single-target Skill DMG +25%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "11%", prev: "10%" },
+          { name: "Physical Penetration%", value: "11%", prev: "10%" }
+        ],
+        baseStats: { hp: 126, atk: 355, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 2 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 10%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 10%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 2",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +22% on AoE attacks.",
+              "Single-target Skill DMG +28%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "12%", prev: "11%" },
+          { name: "Physical Penetration%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 127, atk: 358, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 3 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 12%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 12%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 3",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +24% on AoE attacks.",
+              "Single-target Skill DMG +33%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "13%", prev: "12%" },
+          { name: "Physical Penetration%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 128, atk: 362, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 4 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 12%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 12%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 4",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +26% on AoE attacks.",
+              "Single-target Skill DMG +38%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "14%", prev: "13%" },
+          { name: "Physical Penetration%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 130, atk: 366, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 5 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 15%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 15%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 5",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +28% on AoE attacks.",
+              "Single-target Skill DMG +44%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "15%", prev: "14%" },
+          { name: "Physical Penetration%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 131, atk: 370, statName: "ATK" },
+        skillName: "Vow of Fallen Blossoms",
+        skillDesc: "At the start of battle, if at least one Pendragon ally (other than self) is present, gain Vow of Fallen Blossoms 6 effect.\n\nWhen attacking an enemy afflicted with a Frost debuff, the target's CRIT DMG Taken increases by 15%.\n\nWhen attacking an enemy afflicted with a Skill Control or Action Control debuff, the target's AoE DMG Taken increases by 15%.",
+        buffs: [
+          {
+            name: "Vow of Fallen Blossoms 6",
+            lines: [
+              "Preemptive Strike.",
+              "Physical Penetration / Elemental DMG +30% on AoE attacks.",
+              "Single-target Skill DMG +50%.",
+              "Undispellable."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 5,
+    name: "Pyro Glacier",
+    type: "Staff",
+    attackType: "Magic",
+    exclusive: true,
+    character: "Disciple Kun Greer",
+    charBadge: "badge-teal",
+    changes: [
+      { star: 3, text: "★3 20% chance to recover TP + Cooldown -1 on skill cast (Cooldown 2)" },
+      { star: 5, text: "★5 TP Recovery Cooldown 2 → 1" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "10%" },
+          { name: "Max HP%", value: "5%" }
+        ],
+        baseStats: { hp: 116, atk: 381, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 1 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 1 on the target.\n\nAt the end of the turn, gain Comet Veil 1 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 1",
+            lines: [
+              "DEF / RES -8% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 1",
+            lines: [
+              "ATK / Spell Power -8% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 1",
+            lines: [
+              "Shield equal to 3% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "11%", prev: "10%" },
+          { name: "Max HP%", value: "6%", prev: "5%" }
+        ],
+        baseStats: { hp: 117, atk: 384, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 2 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 2 on the target.\n\nAt the end of the turn, gain Comet Veil 1 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 2",
+            lines: [
+              "DEF / RES -9% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 2",
+            lines: [
+              "ATK / Spell Power -9% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 1",
+            lines: [
+              "Shield equal to 3% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "12%", prev: "11%" },
+          { name: "Max HP%", value: "7%", prev: "6%" }
+        ],
+        baseStats: { hp: 118, atk: 388, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 3 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 3 on the target.\n\nWhen casting a skill (excluding Ultimate), 20% chance to recover TP spent on the skill and reduce that skill's cooldown by 1 (Cooldown 2).\n\nAt the end of the turn, gain Comet Veil 2 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 3",
+            lines: [
+              "DEF / RES -10% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 3",
+            lines: [
+              "ATK / Spell Power -10% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 2",
+            lines: [
+              "Shield equal to 4% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "13%", prev: "12%" },
+          { name: "Max HP%", value: "8%", prev: "7%" }
+        ],
+        baseStats: { hp: 119, atk: 391, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 4 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 4 on the target.\n\nWhen casting a skill (excluding Ultimate), 20% chance to recover TP spent on the skill and reduce that skill's cooldown by 1 (Cooldown 2).\n\nAt the end of the turn, gain Comet Veil 2 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 4",
+            lines: [
+              "DEF / RES -12% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 4",
+            lines: [
+              "ATK / Spell Power -12% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 2",
+            lines: [
+              "Shield equal to 4% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "14%", prev: "13%" },
+          { name: "Max HP%", value: "9%", prev: "8%" }
+        ],
+        baseStats: { hp: 121, atk: 395, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 5 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 5 on the target.\n\nWhen casting a skill (excluding Ultimate), 25% chance to recover TP spent on the skill and reduce that skill's cooldown by 1 (Cooldown 1).\n\nAt the end of the turn, gain Comet Veil 3 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 5",
+            lines: [
+              "DEF / RES -13% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 5",
+            lines: [
+              "ATK / Spell Power -13% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 3",
+            lines: [
+              "Shield equal to 5% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "Magic Penetration%", value: "15%", prev: "14%" },
+          { name: "Max HP%", value: "10%", prev: "9%" }
+        ],
+        baseStats: { hp: 123, atk: 399, statName: "Spell Power" },
+        skillName: "Twin Star Fury",
+        skillDesc: "After using a Fire-element skill or Basic Attack, inflict Solar Fury 6 on the target.\n\nAfter using an Ice-element skill or Basic Attack, inflict Lunar Fury 6 on the target.\n\nWhen casting a skill (excluding Ultimate), 25% chance to recover TP spent on the skill and reduce that skill's cooldown by 1 (Cooldown 1).\n\nAt the end of the turn, gain Comet Veil 3 Shield equal to the number of buffs held.",
+        buffs: [
+          {
+            name: "Solar Fury 6",
+            lines: [
+              "DEF / RES -14% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Lunar Fury 6",
+            lines: [
+              "ATK / Spell Power -14% for 2 turns.",
+              "Max 3 stacks."
+            ]
+          },
+          {
+            name: "Comet Veil 3",
+            lines: [
+              "Shield equal to 5% of Spell Power per stack, lasts 1 turn.",
+              "Max 10 stacks.",
+              "Undispellable.",
+              "Shield."
+            ],
+            tags: ["shield"]
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: 6,
+    name: "Worn Excalibur",
+    type: "Sword",
+    attackType: "Slash",
+    exclusive: true,
+    character: "Cyrano Burnstein",
+    charBadge: "badge-green",
+    changes: [
+      { star: 3, text: "★3 Soul Drain, target DMG Taken +30% on summon attack" },
+      { star: 4, text: "★4 Radiance RES +10%, Soul Craving fixed DMG 6% → 5%" },
+      { star: 5, text: "★5 At max Doom's Advent stacks, grant Doom's Call 1 (DMG Taken +10%)" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "ATK%", value: "10%" },
+          { name: "Physical Penetration%", value: "10%" }
+        ],
+        baseStats: { hp: 125, atk: 352, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use, gain Doom's Advent 1 effect.\n\nHolds Soul Craving 1 effect.\n\nAoE DMG Taken -10%.",
+        buffs: [
+          {
+            name: "Doom's Advent 1",
+            lines: [
+              "Physical Penetration / AoE DMG +10%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Soul Craving 1",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 6% of current HP.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "ATK%", value: "12%", prev: "10%" },
+          { name: "Physical Penetration%", value: "12%", prev: "10%" }
+        ],
+        baseStats: { hp: 126, atk: 356, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use, gain Doom's Advent 2 effect.\n\nHolds Soul Craving 2 effect.\n\nAoE DMG Taken -12%.",
+        buffs: [
+          {
+            name: "Doom's Advent 2",
+            lines: [
+              "Physical Penetration / AoE DMG +11%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Soul Craving 2",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 6% of current HP.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "ATK%", value: "14%", prev: "12%" },
+          { name: "Physical Penetration%", value: "14%", prev: "12%" }
+        ],
+        baseStats: { hp: 127, atk: 359, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use, gain Doom's Advent 3 effect.\n\nHolds Soul Craving 3 effect.\n\nAoE DMG Taken -14%.\n\nSoul Drain: When a summon attacks, target DMG Taken +30%.",
+        buffs: [
+          {
+            name: "Doom's Advent 3",
+            lines: [
+              "Physical Penetration / AoE DMG +12%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Soul Craving 3",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 6% of current HP.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "ATK%", value: "16%", prev: "14%" },
+          { name: "Physical Penetration%", value: "16%", prev: "14%" }
+        ],
+        baseStats: { hp: 128, atk: 362, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use, gain Doom's Advent 4 effect.\n\nHolds Soul Craving 4 effect.\n\nAoE DMG Taken -16%.\n\nRadiance RES +10%.\n\nSoul Drain: When a summon attacks, target DMG Taken +30%.",
+        buffs: [
+          {
+            name: "Doom's Advent 4",
+            lines: [
+              "Physical Penetration / AoE DMG +13%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Soul Craving 4",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 5% of current HP.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "ATK%", value: "18%", prev: "16%" },
+          { name: "Physical Penetration%", value: "18%", prev: "16%" }
+        ],
+        baseStats: { hp: 130, atk: 366, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use / on enemy kill, gain Doom's Advent 5 effect.\n\nWhen Doom's Advent 5 is at max stacks, after attacking, inflict Doom's Call 1 on the enemy.\n\nHolds Soul Craving 5 effect.\n\nAoE DMG Taken -18%.\n\nRadiance RES +20%.\n\nWhen a summon attacks, target DMG Taken +30%.",
+        buffs: [
+          {
+            name: "Doom's Advent 5",
+            lines: [
+              "Physical Penetration / AoE DMG +14%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Doom's Call 1",
+            lines: [
+              "DMG Taken +10%.",
+              "Healing Received -50%.",
+              "Lasts 2 turns.",
+              "Heal Block."
+            ],
+            tags: ["heal-block"]
+          },
+          {
+            name: "Soul Craving 5",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 5% of current HP.",
+              "If TP ≤ 1 at the start of the turn or after skill use, until end of turn, Basic Attack changes to Soul Drain: steal 1 TP, deal Dark Physical DMG equal to 130% ATK, and inflict Enfeeble 2.",
+              "Undispellable."
+            ]
+          }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "ATK%", value: "20%", prev: "18%" },
+          { name: "Physical Penetration%", value: "20%", prev: "18%" }
+        ],
+        baseStats: { hp: 132, atk: 370, statName: "ATK" },
+        skillName: "Chaos Craving",
+        skillDesc: "Before combat, ATK increases by 100% of AoE DMG bonus.\n\nOn skill use / on enemy kill, gain Doom's Advent 6 effect.\n\nWhen Doom's Advent 6 is at max stacks, after attacking, inflict Doom's Call 1 on the enemy.\n\nHolds Soul Craving 6 effect.\n\nAoE DMG Taken -20%.\n\nRadiance RES +20%.\n\nWhen a summon attacks, target DMG Taken +30%.",
+        buffs: [
+          {
+            name: "Doom's Advent 6",
+            lines: [
+              "Physical Penetration / AoE DMG +15%.",
+              "Lasts 2 turns.",
+              "Max 2 stacks.",
+              "Undispellable."
+            ]
+          },
+          {
+            name: "Doom's Call 1",
+            lines: [
+              "DMG Taken +10%.",
+              "Healing Received -50%.",
+              "Lasts 2 turns.",
+              "Heal Block."
+            ],
+            tags: ["heal-block"]
+          },
+          {
+            name: "Soul Craving 6",
+            lines: [
+              "At the start of the turn, take Physical Fixed DMG equal to 5% of current HP.",
+              "If TP ≤ 1 at the start of the turn or after skill use, until end of turn, Basic Attack changes to Soul Drain: steal 1 TP, deal Dark Physical DMG equal to 130% ATK, and inflict Enfeeble 2.",
+              "Undispellable."
+            ]
+          }
+        ]
+      }
+    }
+  }
+];
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let currentWeapon = null;
+let currentStar = 1;
+
+// ══════════════════════════════════════════════
+//  RENDER TABLE
+// ══════════════════════════════════════════════
+function renderTable(list) {
+  const tbody = document.getElementById('weaponTableBody');
+  tbody.innerHTML = '';
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#7a6a50;">No weapons found.</td></tr>';
+    return;
+  }
+  list.forEach(w => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="td-name">
+        <button onclick="openModal(${w.id})">${w.name}</button>
+      </td>
+      <td class="td-type">${w.type}</td>
+      <td class="td-char">
+        <span class="char-badge ${w.charBadge}">${w.character}</span>
+      </td>
+      <td>
+        <div class="changes-cell">
+          ${w.changes.map(c => `<span class="change-tag" onclick="openModalAtStar(${w.id},${c.star})">${c.text}</span>`).join('')}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  FILTER
+// ══════════════════════════════════════════════
+function filterWeapons() {
+  const typeVal = document.getElementById('typeFilter').value;
+  const exclusiveOnly = document.getElementById('exclusiveFilter').checked;
+  const search = document.getElementById('searchInput').value.toLowerCase();
+
+  const filtered = weapons.filter(w => {
+    if (typeVal !== 'all' && w.type !== typeVal) return false;
+    if (exclusiveOnly && !w.exclusive) return false;
+    if (search) {
+      const haystack = (w.name + ' ' + w.type + ' ' + w.character).toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  });
+  renderTable(filtered);
+}
+
+// ══════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════
+function openModal(id, star) {
+  currentWeapon = weapons.find(w => w.id === id);
+  currentStar = star || 1;
+  renderModal();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openModalAtStar(id, star) {
+  openModal(id, star);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function selectStar(star) {
+  currentStar = star;
+  renderModal();
+}
+
+function renderModal() {
+  const w = currentWeapon;
+  const s = w.stars[currentStar];
+
+  // Star button labels
+  const starChanges = {};
+  w.changes.forEach(c => { starChanges[c.star] = c.text; });
+
+  const starBtns = [1,2,3,4,5,6].map(n => {
+    const isActive = n === currentStar ? 'active' : '';
+    const changeText = starChanges[n] ? `<span class="star-change">${starChanges[n].replace(/★\d\s*/,'')}</span>` : '';
+    return `<button class="star-btn ${isActive}" onclick="selectStar(${n})">
+      <span class="star-label">★${n}</span>
+      ${changeText}
+    </button>`;
+  }).join('');
+
+  // Bonus stats
+  const bonusRows = s.bonusStats.map(bs => `
+    <div class="stat-row">
+      <span>${bs.name}</span>
+      <span>
+        <span class="stat-value">${bs.value}</span>
+        ${bs.prev ? `<span class="stat-prev">← ${bs.prev}</span>` : ''}
+      </span>
+    </div>
+  `).join('');
+
+  // Base stats
+  const baseStatLabel = s.baseStats.statName || 'ATK';
+  const baseRows = `
+    <div class="stat-row"><span>Max HP</span><span class="stat-value">${s.baseStats.hp}</span></div>
+    <div class="stat-row"><span>${baseStatLabel}</span><span class="stat-value">${s.baseStats.atk}</span></div>
+  `;
+
+  // Buffs
+  const buffHTML = s.buffs.map(b => {
+    const tagHTML = (b.tags || []).map(t => {
+      if (t === 'shield') return `<span class="buff-tag tag-shield">Shield</span>`;
+      if (t === 'heal-block') return `<span class="buff-tag tag-heal-block">Heal Block</span>`;
+      return '';
+    }).join('');
+    return `
+      <div class="buff-box">
+        <div class="buff-name">${b.name}</div>
+        ${b.lines.map(l => `<div>${l}</div>`).join('')}
+        ${tagHTML}
+      </div>
+    `;
+  }).join('');
+
+  // Skill desc (newlines → <br>)
+  const skillDescHTML = s.skillDesc.replace(/\n/g, '<br>');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-weapon-name">
+      ${w.name}
+      <span class="modal-char-badge ${w.charBadge}">${w.character}</span>
+    </div>
+    <div class="modal-weapon-type">${w.type} / ${w.attackType}</div>
+
+    <div class="star-row">${starBtns}</div>
+
+    <div class="stats-grid">
+      <div class="stats-box">
+        <div class="stats-box-title">Bonus Stats (★${currentStar})</div>
+        ${bonusRows}
+      </div>
+      <div class="stats-box">
+        <div class="stats-box-title">Base Stats <span style="font-weight:400;font-size:10px;">(by star grade)</span></div>
+        ${baseRows}
+      </div>
+    </div>
+
+    <div class="char-tabs">
+      <button class="char-tab active">${w.character}</button>
+      <button class="char-tab">Other Characters</button>
+    </div>
+
+    <div class="skill-section">
+      <div class="skill-name">${s.skillName}</div>
+      <div class="skill-desc-box">${skillDescHTML}</div>
+      <div class="related-buffs-title">Related Buffs</div>
+      ${buffHTML}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+renderTable(weapons);
+</script>
+</body>
+</html>
