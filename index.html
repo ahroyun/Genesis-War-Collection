@@ -1727,6 +1727,213 @@ const weapons = [
         ]
       }
     }
+  },
+  {
+    id: 8,
+    name: "Requiem",
+    type: "Greatsword",
+    attackType: "Slash",
+    exclusive: true,
+    character: "Zephyr the War God",
+    charBadge: "badge-red",
+    changes: [
+      { star: 3, text: "★3 +1 TP on activation, Cooldown 4 → 3" },
+      { star: 4, text: "★4 +1 TP on enemy kill" },
+      { star: 5, text: "★5 Cooldown 3 → 2, TP on activation 1 → 2" },
+      { star: 6, text: "★6 TP on kill 1 → 2" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "10%" },
+          { name: "Max HP%", value: "10%" }
+        ],
+        baseStats: { hp: 28, atk: 80, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 1 to enemies within 2 tiles.\n\nWhen HP drops to 25% or below after being attacked, gains Time After Ruin 1 for 2 turns. (Cooldown: 4)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 1 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 1", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -10%.", "Undispellable." ] },
+          { name: "Time After Ruin 1", lines: [ "Physical Penetration +25%.", "On enemy kill, this effect's duration +1.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "11%", prev: "10%" },
+          { name: "Max HP%", value: "11%", prev: "10%" }
+        ],
+        baseStats: { hp: 29, atk: 83, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 2 to enemies within 2 tiles.\n\nWhen HP drops to 30% or below after being attacked, gains Time After Ruin 2 for 2 turns. (Cooldown: 4)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 2 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 2", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -11%.", "Undispellable." ] },
+          { name: "Time After Ruin 2", lines: [ "Physical Penetration +30%.", "On enemy kill, this effect's duration +1.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "12%", prev: "11%" },
+          { name: "Max HP%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 30, atk: 87, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 3 to enemies within 2 tiles.\n\nWhen HP drops to 35% or below after being attacked, gains Time After Ruin 3 for 2 turns, recovering 1 TP. (Cooldown: 3)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 3 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 3", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -12%.", "Undispellable." ] },
+          { name: "Time After Ruin 3", lines: [ "Physical Penetration +35%.", "On enemy kill, this effect's duration +1.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "13%", prev: "12%" },
+          { name: "Max HP%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 32, atk: 91, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 4 to enemies within 2 tiles.\n\nWhen HP drops to 40% or below after being attacked, gains Time After Ruin 4 for 2 turns, recovering 1 TP. (Cooldown: 3)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 4 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 4", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -13%.", "Undispellable." ] },
+          { name: "Time After Ruin 4", lines: [ "Physical Penetration +40%.", "On enemy kill, this effect's duration +1 and recover 1 TP.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "14%", prev: "13%" },
+          { name: "Max HP%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 33, atk: 94, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 5 to enemies within 2 tiles.\n\nWhen HP drops to 45% or below after being attacked, gains Time After Ruin 5 for 2 turns, recovering 2 TP. (Cooldown: 2)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 5 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 5", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -14%.", "Undispellable." ] },
+          { name: "Time After Ruin 5", lines: [ "Physical Penetration +45%.", "On enemy kill, this effect's duration +1 and recover 1 TP.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "Physical Penetration%", value: "15%", prev: "14%" },
+          { name: "Max HP%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 34, atk: 98, statName: "ATK" },
+        skillName: "Time After Ruin",
+        skillDesc: "Has an aura that applies Melody of the Dead 6 to enemies within 2 tiles.\n\nWhen HP drops to 50% or below after being attacked, gains Time After Ruin 6 for 2 turns, recovering 2 TP. (Cooldown: 2)",
+        altSkillName: "Melody of the Dead",
+        altSkillDesc: "Has an aura that applies Melody of the Dead 6 to enemies within 2 tiles.",
+        buffs: [
+          { name: "Melody of the Dead 6", lines: [ "Physical Penetration / Magic Penetration / Physical Penetration RES / Magic Penetration RES -15%.", "Undispellable." ] },
+          { name: "Time After Ruin 6", lines: [ "Physical Penetration +50%.", "On enemy kill, this effect's duration +1 and recover 2 TP.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      }
+    }
+  },
+  {
+    id: 9,
+    name: "Dragon Slayer Gram",
+    type: "Greatsword",
+    attackType: "Slash",
+    exclusive: true,
+    character: "Zephyr the Dragon Slayer",
+    charBadge: "badge-green",
+    changes: [
+      { star: 3, text: "★3 Dragon Strike Cooldown 3 → 2" },
+      { star: 4, text: "★4 On non-kill, longest skill CD -1" },
+      { star: 6, text: "★6 On non-kill, skill CD reduction -1 → -2" }
+    ],
+    stars: {
+      1: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "10%" },
+          { name: "Max HP%", value: "10%" }
+        ],
+        baseStats: { hp: 122, atk: 364, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 10%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 10%.\n\nAt the start of an allied turn, if Dragon Strike 1 is not active, gain Dragon Strike 1. (Cooldown: 3)",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 10%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 10%.",
+        buffs: [
+          { name: "Dragon Strike 1", lines: [ "ATK / Physical Penetration +25%.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      2: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "11%", prev: "10%" },
+          { name: "Max HP%", value: "11%", prev: "10%" }
+        ],
+        baseStats: { hp: 123, atk: 367, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 11%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 11%.\n\nAt the start of an allied turn, if Dragon Strike 2 is not active, gain Dragon Strike 2. (Cooldown: 3)",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 11%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 11%.",
+        buffs: [
+          { name: "Dragon Strike 2", lines: [ "ATK / Physical Penetration +30%.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      3: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "12%", prev: "11%" },
+          { name: "Max HP%", value: "12%", prev: "11%" }
+        ],
+        baseStats: { hp: 124, atk: 371, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 12%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 12%.\n\nAt the start of an allied turn, if Dragon Strike 3 is not active, gain Dragon Strike 3. (Cooldown: 2)",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 12%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 12%.",
+        buffs: [
+          { name: "Dragon Strike 3", lines: [ "ATK / Physical Penetration +35%.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      4: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "13%", prev: "12%" },
+          { name: "Max HP%", value: "13%", prev: "12%" }
+        ],
+        baseStats: { hp: 126, atk: 375, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 13%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 13%.\n\nAt the start of an allied turn, if Dragon Strike 4 is not active, gain Dragon Strike 4. (Cooldown: 2)",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 13%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 13%.",
+        buffs: [
+          { name: "Dragon Strike 4", lines: [ "ATK / Physical Penetration +40%.", "If attacked but did not kill, reduce the cooldown of the skill with the longest remaining cooldown by -1.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      5: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "14%", prev: "13%" },
+          { name: "Max HP%", value: "14%", prev: "13%" }
+        ],
+        baseStats: { hp: 127, atk: 378, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 14%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 14%.\n\nAt the start of an allied turn, if Dragon Strike 5 is not active, gain Dragon Strike 5.",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 14%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 14%.",
+        buffs: [
+          { name: "Dragon Strike 5", lines: [ "ATK / Physical Penetration +45%.", "If attacked but did not kill, reduce the cooldown of the skill with the longest remaining cooldown by -1.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      },
+      6: {
+        bonusStats: [
+          { name: "CRIT Rate%", value: "15%", prev: "14%" },
+          { name: "Max HP%", value: "15%", prev: "14%" }
+        ],
+        baseStats: { hp: 128, atk: 382, statName: "ATK" },
+        skillName: "Dragon Strike",
+        skillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 15%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 15%.\n\nAt the start of an allied turn, if Dragon Strike 6 is not active, gain Dragon Strike 6.",
+        altSkillName: "Torn Scales",
+        altSkillDesc: "When attacking an enemy, if the target has a debuff, the target's CRIT DMG Taken increases by 15%.\n\nWhen attacked by an enemy with a debuff, CRIT Rate Taken decreases by 15%.",
+        buffs: [
+          { name: "Dragon Strike 6", lines: [ "ATK / Physical Penetration +50%.", "If attacked but did not kill, reduce the cooldown of the skill with the longest remaining cooldown by -2.", "On enemy kill, this effect is removed.", "Lasts 2 turns.", "Undispellable." ] }
+        ]
+      }
+    }
   }
 ];
 
@@ -1793,6 +2000,24 @@ function selectStar(star) {
   renderModal();
 }
 
+function switchSkillTab(tab) {
+  const charSection = document.getElementById('skillSectionChar');
+  const otherSection = document.getElementById('skillSectionOther');
+  const tabChar = document.getElementById('tabChar');
+  const tabOther = document.getElementById('tabOther');
+  if (tab === 'char') {
+    charSection.style.display = '';
+    otherSection.style.display = 'none';
+    tabChar.classList.add('active');
+    tabOther.classList.remove('active');
+  } else {
+    charSection.style.display = 'none';
+    otherSection.style.display = '';
+    tabChar.classList.remove('active');
+    tabOther.classList.add('active');
+  }
+}
+
 function renderModal() {
   const w = currentWeapon;
   const s = w.stars[currentStar];
@@ -1827,6 +2052,28 @@ function renderModal() {
 
   const skillDescHTML = s.skillDesc.replace(/\n/g, '<br>');
 
+  const hasAltSkill = !!(s.altSkillName || s.altSkillDesc);
+  const altSkillDescHTML = s.altSkillDesc ? s.altSkillDesc.replace(/\n/g, '<br>') : '';
+
+  const charTabsHTML = `
+    <div class="char-tabs">
+      <button class="char-tab active" id="tabChar" onclick="switchSkillTab('char')">${w.character}</button>
+      <button class="char-tab" id="tabOther" onclick="switchSkillTab('other')">Other Characters</button>
+    </div>`;
+
+  const skillSectionHTML = `
+    <div class="skill-section" id="skillSectionChar">
+      <div class="skill-name">${s.skillName}</div>
+      <div class="skill-desc-box">${skillDescHTML}</div>
+      <div class="related-buffs-title">Related Buffs</div>
+      ${buffHTML}
+    </div>
+    <div class="skill-section" id="skillSectionOther" style="display:none;">
+      <div class="skill-name">${hasAltSkill ? (s.altSkillName || s.skillName) : s.skillName}</div>
+      <div class="skill-desc-box">${hasAltSkill ? altSkillDescHTML : skillDescHTML}</div>
+      ${hasAltSkill ? '' : '<div class="related-buffs-title">Related Buffs</div>' + buffHTML}
+    </div>`;
+
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-weapon-name">${w.name}<span class="modal-char-badge ${w.charBadge}">${w.character}</span></div>
     <div class="modal-weapon-type">${w.type} / ${w.attackType}</div>
@@ -1835,16 +2082,8 @@ function renderModal() {
       <div class="stats-box"><div class="stats-box-title">Bonus Stats (★${currentStar})</div>${bonusRows}</div>
       <div class="stats-box"><div class="stats-box-title">Base Stats <span style="font-weight:400;font-size:10px;">(by star grade)</span></div>${baseRows}</div>
     </div>
-    <div class="char-tabs">
-      <button class="char-tab active">${w.character}</button>
-      <button class="char-tab">Other Characters</button>
-    </div>
-    <div class="skill-section">
-      <div class="skill-name">${s.skillName}</div>
-      <div class="skill-desc-box">${skillDescHTML}</div>
-      <div class="related-buffs-title">Related Buffs</div>
-      ${buffHTML}
-    </div>`;
+    ${charTabsHTML}
+    ${skillSectionHTML}`;
 }
 
 // ══════════════════════════════════════════════
